@@ -1,4 +1,6 @@
 def crawl(url, xpaths):
     lists = [[]]
-    print("finished")
+
     return lists
+
+print ("finished")
