@@ -1,2 +1,2 @@
 def playerPageRank(listOfPairs):
-    print("hi")
+    print("finished")
