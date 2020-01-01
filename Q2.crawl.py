@@ -75,7 +75,7 @@ def crawl_with_priority(crawled_urls, priority_queue_urls, xpaths, list_of_url_t
                 if current_url not in crawled_urls:
                     insert_url_to_priority_queue(current_url, priority_queue_urls)
                 LOGGER.info("extracted {0} from url: {1}".format(current_url, url_to_crawl))
-        sleep(1)
+        sleep(3)
     no_duplicates = set(map(tuple, list_of_url_tuples))
     return list(map(list, no_duplicates))
 
