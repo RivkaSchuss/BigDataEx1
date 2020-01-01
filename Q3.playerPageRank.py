@@ -24,12 +24,15 @@ def calc_pagerank(visit_count_dict, steps):
     return page_rank
 
 
-def get_random_value_from_dict(url_dict):
-    key = random.choice(list(url_dict))
-    return url_dict[key]
+def visit_random_url(url_dict, visit_dict):
+    url = random.choice(list(url_dict))
+    visit_dict[url] += 1
+    return url_dict[url]
 
 
-def visit_pages(visits, list_of_outgoing_links, steps, url_dict):
+def visit_pages(visits, steps, url_dict):
+    list_of_outgoing_links = visit_random_url(url_dict, visits)
+
     for step in range(0, steps):
         if len(list_of_outgoing_links) != 0:
             if should_follow_link():
@@ -38,13 +41,14 @@ def visit_pages(visits, list_of_outgoing_links, steps, url_dict):
                 if target in url_dict:
                     list_of_outgoing_links = url_dict[target]
                 else:
-                    list_of_outgoing_links = []  # sink
+                    # sink
+                    list_of_outgoing_links = []
             else:
                 # random link with prob 0.15
-                list_of_outgoing_links = get_random_value_from_dict(url_dict)
+                list_of_outgoing_links = visit_random_url(url_dict, visits)
         else:
             # no outgoing links - random link
-            list_of_outgoing_links = get_random_value_from_dict(url_dict)
+            list_of_outgoing_links = visit_random_url(url_dict, visits)
 
 
 def playerPageRank(listOfPairs):
@@ -58,11 +62,11 @@ def playerPageRank(listOfPairs):
 
     steps = 100000
     visit_dict = Counter()
-    list_of_outgoing_links = get_random_value_from_dict(url_dict)
-    visit_pages(visit_dict, list_of_outgoing_links, steps, url_dict)
+
+    visit_pages(visit_dict, steps, url_dict)
     page_rank_first_100000_steps = calc_pagerank(visit_dict, steps=steps)
 
-    visit_pages(visit_dict, list_of_outgoing_links, steps, url_dict)
+    visit_pages(visit_dict, steps, url_dict)
     page_rank_second_100000_steps = calc_pagerank(visit_dict, steps=steps * 2)
 
     merged_page_rank = collections.defaultdict(list)

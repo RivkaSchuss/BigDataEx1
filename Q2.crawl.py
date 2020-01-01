@@ -6,7 +6,7 @@ import requests
 from pqdict import pqdict
 import logging
 
-logging.basicConfig(format='%(levelname)s: %(asctime)s: %(message)s', level=logging.WARNING)
+logging.basicConfig(format='%(levelname)s: %(asctime)s: %(message)s', level=logging.INFO)
 LOGGER = logging.getLogger()
 
 
@@ -61,7 +61,8 @@ def crawl_with_priority(crawled_urls, priority_queue_urls, xpaths, list_of_url_t
         doc = lxml.html.fromstring(res.content)
         for xpath in xpaths:
             for t in doc.xpath(xpath):
-                if "en.wikipedia.org" not in str(t) and (str(t).startswith("https://") or str(t).startswith("http://")):
+                if ("en.wikipedia.org" not in str(t) and (str(t).startswith("https://") or str(t).startswith("http://"))) \
+                        or ("en.wikipedia.org" not in str(t) and (not str(t).startswith("/wiki"))):
                     # don't wander off wikipedia
                     LOGGER.warning("url: {0} is not in Wikipedia, not adding it".format(str(t)))
                     continue
