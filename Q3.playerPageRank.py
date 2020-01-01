@@ -33,7 +33,7 @@ def visit_random_url(url_dict, visit_dict):
 def visit_pages(visits, steps, url_dict):
     list_of_outgoing_links = visit_random_url(url_dict, visits)
 
-    for step in range(1, steps): # first step out of the loop
+    for step in range(1, steps):  # first step out of the loop
         if len(list_of_outgoing_links) != 0:
             if should_follow_link():
                 target = random.choice(list_of_outgoing_links)
