@@ -61,17 +61,23 @@ def playerPageRank(listOfPairs):
         return {}
 
     steps = 100000
-    visit_dict = Counter()
+    first_iter_visit_dict = Counter()
+    visit_pages(first_iter_visit_dict, steps, url_dict)
+    page_rank_first_iter = calc_pagerank(first_iter_visit_dict, steps=steps)
 
-    visit_pages(visit_dict, steps, url_dict)
-    page_rank_first_100000_steps = calc_pagerank(visit_dict, steps=steps)
-
-    visit_pages(visit_dict, steps, url_dict)
-    page_rank_second_100000_steps = calc_pagerank(visit_dict, steps=steps * 2)
+    second_iter_visit_dict = Counter()
+    visit_pages(second_iter_visit_dict, steps, url_dict)
+    page_rank_second_second_iter = calc_pagerank(second_iter_visit_dict, steps=steps)
 
     merged_page_rank = collections.defaultdict(list)
-    for d in (page_rank_first_100000_steps, page_rank_second_100000_steps):
+    for d in (page_rank_first_iter, page_rank_second_second_iter):
         for key, value in d.items():
             merged_page_rank[key].append(value)
+
+    import operator
+    max_first_iter = max(page_rank_first_iter.items(), key=operator.itemgetter(1))
+    max_second_iter = max(page_rank_second_second_iter.items(), key=operator.itemgetter(1))
+    print(max_first_iter)
+    print(max_second_iter)
 
     return dict(merged_page_rank)
